@@ -14,12 +14,22 @@ function generateFoodId() {
 
 Food.prototype.render = function() {
   var tableRow = document.createElement("tr");
-  tableRow.innerHTML = `
-    <td>${this.foodId}</td>
-    <td>${this.foodName}</td>
-    <td>${this.type}</td>
-    <td>$${this.price.toFixed(2)}</td>
-  `;
+
+  var foodIdCell = document.createElement("td");
+  foodIdCell.textContent = this.foodId;
+  tableRow.appendChild(foodIdCell);
+
+  var foodNameCell = document.createElement("td");
+  foodNameCell.textContent = this.foodName;
+  tableRow.appendChild(foodNameCell);
+
+  var typeCell = document.createElement("td");
+  typeCell.textContent = this.type;
+  tableRow.appendChild(typeCell);
+
+  var priceCell = document.createElement("td");
+  priceCell.textContent = "$" + this.price.toFixed(2);
+  tableRow.appendChild(priceCell);
 
   var foodTableBody = document.getElementById("food-table-body");
   foodTableBody.appendChild(tableRow);
@@ -29,19 +39,12 @@ var foodForm = document.getElementById("food-form");
 foodForm.addEventListener("submit", function(event) {
   event.preventDefault();
 
-  var foodNameInput = document.getElementById("food-name-input");
-  var foodTypeSelect = document.getElementById("food-type-select");
-  var foodPriceInput = document.getElementById("food-price-input");
-
-  var foodName = foodNameInput.value;
-  var foodType = foodTypeSelect.value;
-  var foodPrice = parseFloat(foodPriceInput.value);
+  var foodName = event.target["food-name-input"].value;
+  var foodType = event.target["food-type-select"].value;
+  var foodPrice = parseFloat(event.target["food-price-input"].value);
 
   var newFood = new Food(foodName, foodType, foodPrice);
   newFood.render();
 
-  // Reset the form inputs
-  foodNameInput.value = "";
-  foodTypeSelect.value = "";
-  foodPriceInput.value = "";
+  event.target.reset();
 });
